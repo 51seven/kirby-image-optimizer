@@ -1,5 +1,8 @@
 <?php
 
+DEFINE("JPEG", "JPEG");
+DEFINE("PNG", "PNG");
+
 /**
  *
  * @author Sven Schiffer (sven@51seven.de)
@@ -10,28 +13,47 @@ class Optimizer {
   private $image = "";          // image path
   private $copy = "";           // optimized image path
   private $max_width = false;   // scale down to this width
+  private $mimetype;            // Image's mimetype
 
-  public function __construct($image, array $options = array()) {
-    $this->quality = (int) (isset($options['quality'])) ? $options['quality'] : $this->quality;
+  public function __construct($image) {
     $this->image = $image;
-
-    if(!is_int($this->quality)) {
-      throw new Exception("Quality must be of type Integer.");
-    }
-
-    if($this->quality < 0 || $this->quality > 100) {
-      throw new Exception("Quality must be between 0 and 100.");
-    }
-
-    // $this->max_width = ((isset($params['max_width']) && is_int($params['max_width']) && $params['max_width'] > 1) ? $params['max_width'] : false);
+    $this->getMimetype();
 
     if(!is_writable($this->image)) {
       throw new Exception("Image is not writeable: ".$this->image);
     }
   }
 
-  private function getPngQuality() {
-    
+  private function getQuality() {
+    if($this->mimetype == PNG) {
+      $quality = ($this->quality - 100) / 11.111111;
+      $quality = round(abs($quality));
+
+      error_log("png quality: ". $quality);
+      return $quality;
+    }
+    else {
+      error_log("jpg quality: ". $this->quality);
+      return $this->quality;
+    }
+  }
+
+  private function getMimetype() {
+    switch (exif_imagetype($this->image)) {
+      case IMAGETYPE_JPEG: // IMAGETYPE_JPEG
+        $this->mimetype = JPEG;
+        break;
+
+      case IMAGETYPE_PNG: // IMAGETYPE_PNG
+        $this->mimetype = PNG;
+        break;
+
+      default:
+        throw new Exception("Mimetype not supported.");
+        break;
+    }
+
+    return $this->mimetype;
   }
 
   // Optimizes a jpeg image and downscales it if necessary
@@ -46,7 +68,7 @@ class Optimizer {
     }
 
     $this->copy = $this->image.".jpg"; // append this affix to avoid access conditions
-    imagejpeg($img, $this->copy, 90); // Best quality (100)
+    imagejpeg($img, $this->copy, $this->getQuality()); // Best quality (100)
   }
 
   // Optimizes a png image and downscales it if necessary
@@ -61,7 +83,7 @@ class Optimizer {
     }
 
     $this->copy = $this->image.".png"; // append this affix to avoid access conditions
-    imagepng($img, $this->copy, $this->getPngQuality());    // 0 compression
+    imagepng($img, $this->copy, $this->getQuality());    // 0 compression
   }
 
   // validates the integrity of the operations
@@ -82,20 +104,23 @@ class Optimizer {
     }
   }
 
-  public function optimize($params) {
+  public function optimize(array $params) {
+    $this->quality   = (isset($params['quality']))   ? $params['quality']   : $this->quality;
+    $this->max_width = (isset($params['max_width'])) ? $params['max_width'] : $this->max_width;
 
-    switch (exif_imagetype($this->image)) {
-      case IMAGETYPE_JPEG: // IMAGETYPE_JPEG
-        $this->optimize_jpeg();
-        break;
+    if(!is_int($params['max_width']) || $params['max_width'] < 1) {
+      throw new Exception("Max width must be of type Integer and at least 1px wide.");
+    }
 
-      case IMAGETYPE_PNG: // IMAGETYPE_PNG
-        $this->optimize_png();
-        break;
+    if(!is_int($this->quality) || $this->quality < 0 || $this->quality > 100) {
+      throw new Exception("Quality must be of type Integer and between 0 and 100.");
+    }
 
-      default:
-        throw new Exception("Mimetype not supported.");
-        break;
+    if($this->mimetype == JPEG) {
+      $this->optimize_jpeg();
+    }
+    else if($this->mimetype == PNG) {
+      $this->optimize_png();
     }
 
     $this->validate();

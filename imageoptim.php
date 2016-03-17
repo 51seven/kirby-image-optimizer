@@ -18,19 +18,15 @@ $kirby->hook('panel.file.replace', function($file) {
 });
 
 function optimize_init($file) {
-  $max_width = c::get('imageoptim.max_width');
-  $quality   = c::get('imageoptim.quality');
-
   try {
     $optimizer = new Optimizer($file);
     $optimizer->optimize(array(
-      'max_width' => $max_width,
-      'quality'   => $quality
+      'max_width' => c::get('imageoptim.max_width'),
+      'quality'   => c::get('imageoptim.quality')
     ));
   }
   catch(Exception $e) {
-    error_log("Exception caught!");
-    error_log(json_encode($e));
+    error_log("Kirby - ImageOptim: ". $e->getMessage());
   }
 }
 
