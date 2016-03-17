@@ -1,6 +1,6 @@
 <?php
 // Only optimize images if it's enabled
-if(!c::get('zeroimgmeta')) return;
+if(!c::get('imageoptim')) return;
 
 // Load Optimizer Class
 require_once "lib/Optimizer.php";
@@ -18,12 +18,20 @@ $kirby->hook('panel.file.replace', function($file) {
 });
 
 function optimize_init($file) {
-  $max_width = c::get('zeroimgmeta.max_width');
+  $max_width = c::get('imageoptim.max_width');
+  $quality   = c::get('imageoptim.quality');
 
-  $optimizer = new Optimizer($file);
-  $optimizer->optimize(array(
-    'max_width' => $max_width
-  ));
+  try {
+    $optimizer = new Optimizer($file);
+    $optimizer->optimize(array(
+      'max_width' => $max_width,
+      'quality'   => $quality
+    ));
+  }
+  catch(Exception $e) {
+    error_log("Exception caught!");
+    error_log(json_encode($e));
+  }
 }
 
 ?>

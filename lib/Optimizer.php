@@ -6,7 +6,7 @@
 **/
 class Optimizer {
 
-  private $quality = 100;       // 0 (worst quality) to 100 (best quality)
+  private $quality = 90;        // 0 (worst quality) to 100 (best quality)
   private $image = "";          // image path
   private $copy = "";           // optimized image path
   private $max_width = false;   // scale down to this width
@@ -23,9 +23,15 @@ class Optimizer {
       throw new Exception("Quality must be between 0 and 100.");
     }
 
+    // $this->max_width = ((isset($params['max_width']) && is_int($params['max_width']) && $params['max_width'] > 1) ? $params['max_width'] : false);
+
     if(!is_writable($this->image)) {
       throw new Exception("Image is not writeable: ".$this->image);
     }
+  }
+
+  private function getPngQuality() {
+    
   }
 
   // Optimizes a jpeg image and downscales it if necessary
@@ -55,7 +61,7 @@ class Optimizer {
     }
 
     $this->copy = $this->image.".png"; // append this affix to avoid access conditions
-    imagepng($img, $this->copy, 1);    // 0 compression
+    imagepng($img, $this->copy, $this->getPngQuality());    // 0 compression
   }
 
   // validates the integrity of the operations
@@ -67,7 +73,7 @@ class Optimizer {
       unlink($this->image);              // Delete the original image
       rename($this->copy, $this->image); // Rename the optimized image to the original one
 
-      error_log("optimized image and saved ".(($oldsize-$newsize) / 1024)." kb");
+      error_log("optimized image and saved ".round((($oldsize-$newsize) / 1024))." kb");
     }
     else {
       unlink($this->copy);
@@ -77,7 +83,6 @@ class Optimizer {
   }
 
   public function optimize($params) {
-    $this->max_width = ((isset($params['max_width']) && is_int($params['max_width']) && $params['max_width'] > 1) ? $params['max_width'] : false);
 
     switch (exif_imagetype($this->image)) {
       case IMAGETYPE_JPEG: // IMAGETYPE_JPEG
