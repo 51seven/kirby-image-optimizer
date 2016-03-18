@@ -3,9 +3,10 @@ Kirby CMS Plugin for automatic image compression and scaling.
 
 # Installation
 
-Copy or clone this repository into your `/site/plugins` directory.
+Copy or clone this repository into your `/site/plugins` directory.<br>
+Edit your `config.php` as follows:
 
-### Basic setup `config.php`:
+### Basic setup
 ```php
 c::set('imageoptim', true);           // {true} activate the plugin
 ```
