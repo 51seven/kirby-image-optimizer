@@ -28,23 +28,21 @@ class Optimizer {
     if($this->mimetype == PNG) {
       $quality = ($this->quality - 100) / 11.111111;
       $quality = round(abs($quality));
-
-      error_log("png quality: ". $quality);
+      
       return $quality;
     }
     else {
-      error_log("jpg quality: ". $this->quality);
       return $this->quality;
     }
   }
 
   private function getMimetype() {
     switch (exif_imagetype($this->image)) {
-      case IMAGETYPE_JPEG: // IMAGETYPE_JPEG
+      case IMAGETYPE_JPEG:
         $this->mimetype = JPEG;
         break;
 
-      case IMAGETYPE_PNG: // IMAGETYPE_PNG
+      case IMAGETYPE_PNG:
         $this->mimetype = PNG;
         break;
 
@@ -94,13 +92,9 @@ class Optimizer {
     if($newsize < $oldsize) {
       unlink($this->image);              // Delete the original image
       rename($this->copy, $this->image); // Rename the optimized image to the original one
-
-      error_log("optimized image and saved ".round((($oldsize-$newsize) / 1024))." kb");
     }
     else {
       unlink($this->copy);
-
-      error_log("new image is larger then old one.");
     }
   }
 
