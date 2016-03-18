@@ -18,6 +18,8 @@ c::set('imageoptim.quality', 90); // default: 90
 // Downscale the image to a given width.
 c::set('imageoptim.max_width', 1920); // default: disabled
 ```
+# Notes
+Currently supported Filetypes: `JPG`, `PNG`.
 
 # Copyright
 
