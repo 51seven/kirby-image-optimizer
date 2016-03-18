@@ -12,7 +12,7 @@ Edit your `config.php` as follows:
 
 ### Basic setup
 ```php
-c::set('imageoptim', true);           // {true} activate the plugin
+c::set('imageoptim', true); // {true} activate the plugin
 ```
 ### Advanced options
 ```php
@@ -20,7 +20,7 @@ c::set('imageoptim', true);           // {true} activate the plugin
 c::set('imageoptim.quality', 90); // default: 90
 
 // Downscale the image to a given width.
-c::set('imageoptim.max_width', 1920); // default: disabled
+c::set('imageoptim.max_width', 1920); // default: disabled (no scaling)
 ```
 # Notes
 Currently supported Filetypes: `JPG`, `PNG`.

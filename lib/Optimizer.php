@@ -28,7 +28,7 @@ class Optimizer {
     if($this->mimetype == PNG) {
       $quality = ($this->quality - 100) / 11.111111;
       $quality = round(abs($quality));
-      
+
       return $quality;
     }
     else {
@@ -47,8 +47,7 @@ class Optimizer {
         break;
 
       default:
-        throw new Exception("Mimetype not supported.");
-        break;
+        return false;
     }
 
     return $this->mimetype;
@@ -115,6 +114,10 @@ class Optimizer {
     }
     else if($this->mimetype == PNG) {
       $this->optimize_png();
+    }
+    else {
+      // do nothing due to unsupported mimetype.
+      return false;
     }
 
     $this->validate();
