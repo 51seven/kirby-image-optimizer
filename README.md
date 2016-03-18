@@ -5,11 +5,17 @@ Kirby CMS Plugin for automatic image compression and scaling.
 
 Copy or clone this repository into your `/site/plugins` directory.
 
-Edit your `config.php`:
+### Basic setup `config.php`:
 ```php
 c::set('imageoptim', true);           // {true} activate the plugin
-c::set('imageoptim.quality', 90);     // {0-100} quality compression in percentage. 0 = lowest quality, 100 = highest quality
-c::set('imageoptim.max_width', 1920); // downscale the image to a given width
+```
+### Advanced options
+```php
+// Quality compression in percentage. (0 = lowest quality, 100 = highest quality)
+c::set('imageoptim.quality', 90); // default: 90
+
+// Downscale the image to a given width.
+c::set('imageoptim.max_width', 1920); // default: disabled
 ```
 
 # Copyright
