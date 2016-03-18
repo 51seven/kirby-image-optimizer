@@ -1,6 +1,10 @@
 # Kirby Image Optimizer Plugin
 Kirby CMS Plugin for automatic image compression and scaling.
 
+# Requirements
+- You need at least Kirby CMS v 2.1.
+- Your PHP version has to support PHP's GD and Image Functions. Check via: `var_dump(gd_info())`
+
 # Installation
 
 Copy or clone this repository into your `/site/plugins` directory.<br>
