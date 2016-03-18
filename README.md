@@ -1,5 +1,5 @@
 # Kirby Image Optimizer Plugin
-Kirby CMS Plugin for automatic image compression and scaling.
+Kirby CMS Plugin for automatic image compression and scaling for new or replaced panel uploads.
 
 # Requirements
 - You need at least Kirby CMS v 2.1.
