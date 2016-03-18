@@ -1,4 +1,4 @@
-# kirby-image-optimizer
+# Kirby Image Otimizer Plugin
 Kirby CMS Plugin for automatic image compression and scaling.
 
 # Installation
