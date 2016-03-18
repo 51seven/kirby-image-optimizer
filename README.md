@@ -14,4 +14,4 @@ c::set('imageoptim.max_width', 1920); // downscale the image to a given width
 
 # Copyright
 
-Copyright 2016 51seven, Gesellschaft für Markenkommunikation mbH.
+Copyright 2016 - 51seven, Gesellschaft für Markenkommunikation mbH.
