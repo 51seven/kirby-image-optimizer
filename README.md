@@ -27,6 +27,3 @@ Currently supported Filetypes: `JPG`, `PNG`.
 
 ## Contribution
 Feel free to fork this project or open issues.
-
-## Copyright
-Copyright 2016 - 51seven, Gesellschaft für Markenkommunikation mbH.
