@@ -9,12 +9,12 @@ $kirby = kirby();
 
 // A new file has been uploaded
 $kirby->hook('panel.file.upload', function($file) {
-  optimize_init($file);
+  optimize_init($file->root());
 });
 
 // A file has been replaced
 $kirby->hook('panel.file.replace', function($file) {
-  optimize_init($file);
+  optimize_init($file->root());
 });
 
 function optimize_init($file) {
